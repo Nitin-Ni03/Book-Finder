@@ -1,135 +1,129 @@
 # Book Finder
 
-A modern, responsive web application for discovering and exploring millions of books using the Open Library API. Search by title, author, or subject, and get detailed information about books with a beautiful user interface.
+Book Finder is a modern React web app that helps users discover books from the Open Library dataset. It offers advanced search filters, a responsive interface, a detailed book preview modal, and dark mode support.
 
-## 🌟 Features
+## 🌟 Key Features
 
-- **Advanced Search**: Search books by title, author, subject, or general keywords
-- **Multiple Search Options**: Filter results by different search types and sort by relevance or newest
-- **Book Details Modal**: View comprehensive information about any book including authors, publishers, page count, publication date, and more
-- **Book Cover Display**: View book covers with fallback design for books without covers
-- **Skeleton Loading**: Beautiful loading state with skeleton screens for better UX
-- **Dark Mode**: Toggle between light and dark themes with persistent preference storage
-- **Responsive Design**: Fully responsive layout that works on desktop, tablet, and mobile devices
-- **Local Storage**: Saves user theme preferences for a personalized experience
-- **Lazy Loading**: Optimized image loading for better performance
-- **No Results Handling**: User-friendly messages when no books are found
+- **Flexible search** by title, author, subject, or general query
+- **Sort results** by relevance or newest publications
+- **Book detail modal** with publisher, pages, publish year, language, and description
+- **Cover art support** with fallback display for missing covers
+- **Skeleton loader UI** while fetching search results
+- **Dark mode toggle** with preference saved to local storage
+- **Responsive layout** for desktop and mobile browsing
+- **Error handling** and friendly empty states
+
+## 🧩 What the App Does
+
+- Sends search requests to the Open Library API at `https://openlibrary.org/search.json`
+- Maps API results into a book card grid with cover image, title, author, and category
+- Fetches detailed book descriptions using the Open Library work endpoint via the selected book key
+- Keeps theme choice between light and dark modes using `localStorage`
+- Shows a “No Books Found” state when the query returns no results
 
 ## 🛠️ Technology Stack
 
-- **React 19**: Modern UI library for building interactive components
-- **Vite**: Fast build tool and development server
-- **Axios**: HTTP client for API requests
-- **CSS3**: Custom styling with CSS variables and animations
-- **Open Library API**: Free API for accessing book data
+- **React 19**
+- **Vite**
+- **Axios**
+- **CSS3**
+- **Open Library API**
 
-### Development Tools
-- **ESLint**: Code quality and consistency checks
-- **Vite**: For bundling and hot module replacement during development
+## 📁 Project Structure
+
+```
+book-finder/
+├── public/                      # Public static files
+├── src/
+│   ├── assets/                  # Static image assets
+│   ├── components/              # Reusable UI components
+│   │   ├── BookCard.jsx         # Book card with cover, title, author, and details button
+│   │   ├── BookList.jsx         # Grid and empty-state rendering for search results
+│   │   ├── BookModal.jsx        # Modal showing detailed book metadata and description
+│   │   ├── Navbar.jsx           # App header with dark mode toggle
+│   │   ├── SearchBar.jsx        # Search bar with filters and sort options
+   │   └── SkeletonLoader.jsx    # Placeholder loader skeletons while fetching
+│   ├── App.jsx                  # Main app component and search logic
+│   ├── main.jsx                 # React entry point
+│   ├── App.css                  # Core styling for layout and components
+│   └── index.css                # Global base styles and theme variables
+├── .gitignore
+├── eslint.config.js             # ESLint configuration
+├── index.html                   # Vite HTML template
+├── package.json                 # Dependencies and scripts
+├── README.md                    # Project documentation
+└── vite.config.js               # Vite build config
+```
 
 ## 📦 Installation
 
-1. **Clone the repository**:
+1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd book-finder
 ```
-
-2. **Install dependencies**:
+2. Install dependencies:
 ```bash
 npm install
 ```
-
-3. **Start the development server**:
+3. Start development server:
 ```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173` (or the port shown in your terminal).
+Open the app at the local URL shown in the terminal.
 
 ## 🚀 Usage
 
-1. **Open the Application**: Navigate to the local development URL
-2. **Search for Books**: Enter your search query in the search bar
-3. **Choose Search Type**: Select whether you want to search by title, author, subject, or general keywords
-4. **Sort Results**: Choose to sort by relevance or newest publications
-5. **View Details**: Click on any book card to see detailed information
-6. **Toggle Theme**: Use the dark mode toggle in the navigation bar
+1. Enter text in the search field
+2. Select a search type: all fields, title, author, or subject
+3. Choose sort order: relevance or newest
+4. Click **Search**
+5. Click a book card or the details button to open the modal
+6. Toggle theme with the moon/sun button in the navbar
 
-### Example Searches
-- Title: "The Great Gatsby"
-- Author: "J.K. Rowling"
-- Subject: "science fiction"
-- General: "machine learning"
+## 📌 Available Scripts
 
-## 📂 Project Structure
+- `npm run dev` — start the Vite development server
+- `npm run build` — build a production bundle
+- `npm run preview` — preview the production build locally
+- `npm run lint` — run ESLint checks
 
-```
-book-finder/
-├── src/
-│   ├── components/
-│   │   ├── BookCard.jsx          # Individual book card component
-│   │   ├── BookList.jsx          # Grid of book cards
-│   │   ├── BookModal.jsx         # Detailed book information modal
-│   │   ├── Navbar.jsx            # Navigation bar with theme toggle
-│   │   ├── SearchBar.jsx         # Search form with filters
-│   │   └── SkeletonLoader.jsx    # Loading placeholder components
-│   ├── App.jsx                   # Main application component
-│   ├── main.jsx                  # React entry point
-│   ├── App.css                   # Main styling
-│   ├── index.css                 # Global styles
-│   └── assets/                   # Static assets
-├── public/                        # Public static files
-├── vite.config.js                # Vite configuration
-├── eslint.config.js              # ESLint configuration
-├── package.json                  # Project dependencies
-├── index.html                    # HTML template
-└── README.md                      # This file
-```
+## 🔌 API Details
 
-## 📜 Available Scripts
+This app uses the Open Library API:
 
-- **`npm run dev`**: Start development server with hot reload
-- **`npm run build`**: Build optimized production bundle
-- **`npm run preview`**: Preview production build locally
-- **`npm run lint`**: Check code quality with ESLint
+- Search endpoint: `https://openlibrary.org/search.json`
+- Work details endpoint: `https://openlibrary.org{workKey}.json`
+- No API key required
 
-## 🔌 API Information
+### Search query behavior
 
-This project uses the **Open Library API**, a free, open-source book API:
+- `title` searches book titles
+- `author` searches author fields
+- `subject` searches subjects/genres
+- `q` performs a general query across available fields
+- uses `limit=24` results per request
+- `sort=new` is applied when the user selects newest
 
-- **API Endpoint**: `https://openlibrary.org/search.json`
-- **No Authentication Required**: Free to use without API keys
-- **Rate Limiting**: Reasonable rate limits for development/personal use
-- **Documentation**: [Open Library API Docs](https://openlibrary.org/dev/docs/api)
+## 🎨 Styling and UX
 
-### Search Parameters
-- `title`: Search by book title
-- `author`: Search by author name
-- `subject`: Search by subject/genre
-- `q`: General search across all fields
-- `limit`: Number of results (default: 24)
-- `sort`: Sort order ('new' for newest, default is by relevance)
+- Responsive card grid layout
+- Dark/light theming with CSS variables
+- Skeleton loader on fetch
+- Accessible buttons and labels
+- Modal overlay with scroll lock while open
 
-## 🎨 Styling Features
+## 📘 Notes
 
-- **CSS Variables**: Custom color system for easy theming
-- **Dark Mode**: Automatic dark mode support with manual toggle
-- **Animations**: Smooth fade-in animations for better visual feedback
-- **Responsive Grid**: Auto-adjusting book card grid layout
-- **Accessibility**: Semantic HTML and ARIA labels
+- Some books may not include publisher, page count, or language data
+- The modal attempts to fetch a richer description from the Open Library work endpoint
+- If cover images are unavailable, the app displays a styled fallback cover
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to fork the repository and submit pull requests.
+Contributions are welcome. Feel free to open issues or submit pull requests.
 
 ## 📄 License
 
-This project is open source and available for personal and educational use.
-
-## 🔗 Resources
-
-- [React Documentation](https://react.dev)
-- [Vite Documentation](https://vitejs.dev)
-- [Open Library API](https://openlibrary.org/dev/docs/api)
-- [Axios Documentation](https://axios-http.com)
+Open source for learning and personal use.
