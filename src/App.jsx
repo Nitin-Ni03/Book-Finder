@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
@@ -14,6 +14,7 @@ function App() {
 
   // Selected book for details modal
   const [selectedBook, setSelectedBook] = useState(null);
+  const searchRequestRef = useRef(null);
 
   // Dark mode state
   const [darkMode, setDarkMode] = useState(() => {
@@ -42,6 +43,10 @@ function App() {
   const searchBooks = async (query, searchType, sortBy) => {
     if (!query) return;
 
+    searchRequestRef.current?.abort();
+    const requestController = new AbortController();
+    searchRequestRef.current = requestController;
+
     try {
       setLoading(true);
       setError(null);
@@ -68,7 +73,7 @@ function App() {
 
       const response = await axios.get(
         `https://openlibrary.org/search.json`,
-        { params }
+        { params, signal: requestController.signal }
       );
 
       const docs = response.data.docs || [];
@@ -97,6 +102,8 @@ function App() {
 
       setBooks(mappedBooks);
     } catch (err) {
+      if (axios.isCancel(err)) return;
+
       console.error("Search API error:", err);
       setError(
         err.response?.data?.message ||
@@ -104,7 +111,10 @@ function App() {
       );
       setBooks([]);
     } finally {
-      setLoading(false);
+      if (searchRequestRef.current === requestController) {
+        searchRequestRef.current = null;
+        setLoading(false);
+      }
     }
   };
 

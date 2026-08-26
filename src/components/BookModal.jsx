@@ -6,11 +6,19 @@ const BookModal = ({ book, onClose }) => {
 
   useEffect(() => {
     // Disable body scroll when modal is open
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
     };
-  }, []);
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
 
   useEffect(() => {
     if (!book) return;
